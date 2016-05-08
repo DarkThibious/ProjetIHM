@@ -6,8 +6,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.dnd.MouseDragGestureRecognizer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -20,7 +27,11 @@ import javax.swing.border.Border;
 public class ThreesWindow extends JFrame
 {
 	private JLabel[][] tuiles;
+	private JButton start;
 	private Random tirage;
+	private Point mouse1;
+	private JPanel startPanel;
+	private JPanel gamePanel;
 	
 	public ThreesWindow(String title)
 	{
@@ -29,20 +40,79 @@ public class ThreesWindow extends JFrame
 		init();
 	}
 	
-	public KeyListener move = new KeyListener() 
+	public ActionListener buttonStart = new ActionListener() 
+	{	
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			setContentPane(gamePanel);	
+		}
+	};
+	
+	public MouseListener mouseClick = new MouseListener() 
 	{
 		
 		@Override
-		public void keyTyped(KeyEvent e) 
+		public void mouseReleased(MouseEvent e)
 		{
-			return;
+			Point mouse2 = e.getPoint();
+			int dx = mouse1.x - mouse2.x;
+			int dy = mouse1.y - mouse2.y;
+			
+			System.out.println("dx : " + dx + " dy : " + dy);
+			
+			if(Math.abs(dx) < 10 && Math.abs(dy) < 10) // Pour éviter de prendre en compte les mouvements trop petits
+			{
+				return;
+			}
+			if(Math.abs(dy) > Math.abs(dx))
+			{
+				if(dy > 0)
+				{
+					moveUp();
+				}
+				else
+				{
+					moveDown();
+				}
+			}
+			else
+			{
+				if(dx > 0)
+				{
+					moveLeft();
+				}
+				else
+				{
+					moveRight();
+				}
+			}
 		}
 		
 		@Override
-		public void keyReleased(KeyEvent e) 
+		public void mousePressed(MouseEvent e)
 		{
-			return;
+			mouse1 = e.getPoint();
 		}
+		
+		@Override
+		public void mouseExited(MouseEvent e){}
+		
+		@Override
+		public void mouseEntered(MouseEvent e){}
+		
+		@Override
+		public void mouseClicked(MouseEvent e){}
+	};
+	
+	public KeyListener keyMove = new KeyListener() 
+	{
+		
+		@Override
+		public void keyTyped(KeyEvent e){}
+		
+		@Override
+		public void keyReleased(KeyEvent e){}
 		
 		@Override
 		public void keyPressed(KeyEvent e) 
@@ -209,16 +279,21 @@ public class ThreesWindow extends JFrame
 	
 	public void init()
 	{
+		
+		/*startPanel = new JPanel();
+		start = new JButton("Commencer");
+		start.addActionListener(buttonStart);
+		startPanel.add(start);*/
+		
+		gamePanel = (JPanel) getContentPane();
 		tuiles = new JLabel[4][4];
-		
-		Container mainPanel= getContentPane();
-		
 		Font font = new Font("Arial", 0, 22);
 		Border line = BorderFactory.createLineBorder(Color.black);
 		
-		mainPanel.setLayout(new GridLayout(4,4));
-		mainPanel.addKeyListener(move);
-		mainPanel.setFocusable(true);
+		gamePanel.setLayout(new GridLayout(4,4));
+		gamePanel.addKeyListener(keyMove);
+		gamePanel.addMouseListener(mouseClick);
+		gamePanel.setFocusable(true);
 	//	((GridLayout) mainPanel.getLayout()).setHgap(10);
 	//	((GridLayout) mainPanel.getLayout()).setVgap(10);
 		
@@ -232,14 +307,15 @@ public class ThreesWindow extends JFrame
 				tuiles[x][y].setFont(font);
 				tmp.setBorder(line);
 				tmp.add(tuiles[x][y]);
-				mainPanel.add(tmp);
+				gamePanel.add(tmp);
 			}
 		}
-		Boolean done;
+		
 		for(i=0;i<9;i++)
 		{
 			nbAlea();
 		}
+		
 		setVisible(true);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
