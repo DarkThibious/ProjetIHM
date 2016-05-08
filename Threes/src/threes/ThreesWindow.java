@@ -144,34 +144,52 @@ public class ThreesWindow extends JFrame
 	{
 		boolean done = false;
 		int x, y;
+		int i = 0;
 		do
 		{
 			x = tirage.nextInt(4);
 			y = tirage.nextInt(4);
 			done = nbAlea(x, y);
-		}while(done == false);
+			i++;
+		}while(done == false && i<15000);
+		if(i==15000)
+		{
+			perdu();
+		}
 	}
 	
 	public void nbAleaX(int x)
 	{
 		boolean done = false;
+		int i = 0;
 		int y;
 		do
 		{
 			y = tirage.nextInt(4);
 			done = nbAlea(x, y);
-		}while(done == false);
+			i++;
+		}while(done == false && i<15000);
+		if(i==15000)
+		{
+			perdu();
+		}
 	}
 	
 	public void nbAleaY(int y)
 	{
 		boolean done = false;
+		int i=0;
 		int x;
 		do
 		{
 			x = tirage.nextInt(4);
 			done = nbAlea(x, y);
-		}while(done == false);
+			i++;
+		}while(done == false && i<15000);
+		if(i==15000)
+		{
+			perdu();
+		}
 	}
 	
 	public boolean nbAlea(int x, int y)
@@ -182,6 +200,11 @@ public class ThreesWindow extends JFrame
 			return true;
 		}
 		return false;
+	}
+
+	public void perdu()
+	{
+		
 	}
 	
 	public void init()
