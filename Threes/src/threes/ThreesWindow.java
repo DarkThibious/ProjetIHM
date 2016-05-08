@@ -1,5 +1,6 @@
 package threes;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -32,10 +33,13 @@ public class ThreesWindow extends JFrame
 	private Point mouse1;
 	private JPanel startPanel;
 	private JPanel gamePanel;
+	private JLabel losslbl;
 	
 	public ThreesWindow(String title)
 	{
 		super(title);
+		setLocationRelativeTo(null);
+		setLocation(getX()-getWidth()/2, getY()-getHeight()/2);
 		tirage = new Random();
 		init();
 	}
@@ -45,7 +49,7 @@ public class ThreesWindow extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			setContentPane(gamePanel);	
+			initPartie();
 		}
 	};
 	
@@ -274,20 +278,31 @@ public class ThreesWindow extends JFrame
 
 	public void perdu()
 	{
-		
+		losslbl.setVisible(true);
+		start.setText("Recommencer");
+		getContentPane().remove(gamePanel);
+		getContentPane().add(startPanel);
+		pack();
 	}
 	
 	public void init()
 	{
-		
-		/*startPanel = new JPanel();
-		start = new JButton("Commencer");
-		start.addActionListener(buttonStart);
-		startPanel.add(start);*/
-		
-		gamePanel = (JPanel) getContentPane();
-		tuiles = new JLabel[4][4];
 		Font font = new Font("Arial", 0, 22);
+		
+		startPanel = new JPanel();
+		start = new JButton("Commencer");
+		losslbl = new JLabel("Perdu !");
+		losslbl.setVisible(false);
+		losslbl.setFont(font);
+		losslbl.setHorizontalAlignment(JLabel.CENTER);
+		start.addActionListener(buttonStart);
+		startPanel.setLayout(new BorderLayout(5,5));
+		startPanel.add(start, BorderLayout.CENTER);
+		startPanel.add(losslbl, BorderLayout.NORTH);
+		
+		gamePanel = new JPanel();
+		tuiles = new JLabel[4][4];
+
 		Border line = BorderFactory.createLineBorder(Color.black);
 		
 		gamePanel.setLayout(new GridLayout(4,4));
@@ -305,6 +320,8 @@ public class ThreesWindow extends JFrame
 				JPanel tmp = new JPanel();
 				tuiles[x][y] = new JLabel("");
 				tuiles[x][y].setFont(font);
+				tuiles[x][y].setHorizontalAlignment(JLabel.CENTER);
+				tuiles[x][y].setVerticalAlignment(JLabel.CENTER);
 				tmp.setBorder(line);
 				tmp.add(tuiles[x][y]);
 				gamePanel.add(tmp);
@@ -316,9 +333,30 @@ public class ThreesWindow extends JFrame
 			nbAlea();
 		}
 		
+		getContentPane().add(startPanel);
 		setVisible(true);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void initPartie()
+	{
+		int i, x, y;
+		for(x =0;x<4;x++)
+		{
+			for(y=0;y<4;y++)
+			{
+				tuiles[x][y].setText("");
+			}
+		}
+		
+		for(i=0;i<9;i++)
+		{
+			nbAlea();
+		}
+		getContentPane().remove(startPanel);
+		getContentPane().add(gamePanel);
+		pack();
 	}
 	
 	public static void main(String[] args)
