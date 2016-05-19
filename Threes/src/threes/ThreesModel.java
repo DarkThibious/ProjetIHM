@@ -8,11 +8,9 @@ public class ThreesModel
 	private Random tirage;
 	private boolean loss;
 	private boolean full;
-	protected ThreesView view;
 	
-	public ThreesModel(ThreesView view)
+	public ThreesModel()
 	{
-		this.view = view;
 		tuiles = new int[4][4];
 		tirage = new Random();
 		loss = false;
@@ -196,14 +194,6 @@ public class ThreesModel
 	
 	public void updateCases() 
 	{
-		int x, y;
-		for(x =0;x<4;x++)
-		{
-			for(y=0;y<4;y++)
-			{
-				view.setCase(x, y, this.tuiles[x][y]);
-			}
-		}
 		testFull();
 		testPerdu();
 	}
@@ -260,5 +250,10 @@ public class ThreesModel
 	public boolean getLoss() 
 	{
 		return loss;
+	}
+	
+	public int getValue(int x, int y)
+	{
+		return tuiles[x][y];
 	}
 }
