@@ -22,8 +22,7 @@ public class ThreesMain extends JFrame
         contentPane.add(startpanel);
         this.addView(startpanel);
         
-        gamepanel = new GamePanel1D(this);
-        this.addView(gamepanel);
+
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -61,6 +60,8 @@ public class ThreesMain extends JFrame
     
     public void initPartie()
     {
+        gamepanel = new GamePanel1D(this);
+        this.addView(gamepanel);
     	model.initPartie();
     	contentPane.remove(startpanel);
     	contentPane.add(gamepanel);

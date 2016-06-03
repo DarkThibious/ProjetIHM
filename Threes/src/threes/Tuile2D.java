@@ -54,6 +54,7 @@ public class Tuile2D extends JComponent{
 	  
 	  public static void main(String args[]) throws InterruptedException
 	  {
+		  /*
 		  JFrame test = new JFrame("Bonjour");
 		  Tuile2D tuile = new Tuile2D();
 		  tuile.setVisible(true);
@@ -69,5 +70,6 @@ public class Tuile2D extends JComponent{
 		  tuile.update(3);
 		  Thread.sleep(2000);
 		  tuile.update(0);
+		  */
 	  }
 }

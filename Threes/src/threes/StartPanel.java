@@ -9,9 +9,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class StartPanel extends JPanel implements ThreesView
 {
@@ -21,6 +23,10 @@ public class StartPanel extends JPanel implements ThreesView
 	private JButton start;
 	private JLabel losslbl;
 	private JLabel scorelbl;
+	JRadioButton option1 = new JRadioButton("Interface 1");
+    JRadioButton option2 = new JRadioButton("Interface 2");
+    ButtonGroup group = new ButtonGroup();
+    Boolean intefaceAv;
 	
 	public StartPanel(ThreesMain controller)
 	{
@@ -45,7 +51,7 @@ public class StartPanel extends JPanel implements ThreesView
 		scorelbl.setHorizontalAlignment(JLabel.CENTER);
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	//	setLayout(new FlowLayout());
+		setLayout(new FlowLayout());
 		add(losslbl);
 		add(scorelbl);
 		add(start);
@@ -55,6 +61,19 @@ public class StartPanel extends JPanel implements ThreesView
 		start.requestFocus();
 		
 		this.setVisible(true);
+		
+	/* Radio Button */
+       
+        group.add(option1);
+        group.add(option2);
+        setLayout(new FlowLayout());
+        add(option1);
+        add(option2);
+        
+		option1.addActionListener(radioButton);
+		option2.addActionListener(radioButton);
+
+        
 	}
 	
 	public void update()
@@ -82,4 +101,30 @@ public class StartPanel extends JPanel implements ThreesView
 			control.initPartie();
 		}
 	};
+	
+	
+	public ActionListener radioButton = new ActionListener()
+	{
+		@Override
+	    public void actionPerformed(ActionEvent event)
+		{
+		 JRadioButton button = (JRadioButton) event.getSource();
+	     if (radioButton == option1) 
+	    	 setIntefaceAv(true);
+	     else if (radioButton == option2)  
+	    	 setIntefaceAv(false);	
+	    } 
+	};
+
+	public Boolean getIntefaceAv() {
+		return intefaceAv;
+	}
+
+	public void setIntefaceAv(Boolean intefaceAv) {
+		this.intefaceAv = intefaceAv;
+	}
+	
+	
+	
+	
 }
