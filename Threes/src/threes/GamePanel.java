@@ -21,16 +21,17 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-public class GamePanel extends JPanel implements ThreesView
+public abstract class GamePanel extends JPanel implements ThreesView
 {
 	private ThreesModel data;
 	private ThreesMain control;
 	
-	private JPanel TabPanel;
+	protected JPanel TabPanel;
 	
 	Point mouse1;
 	
-	private JLabel[][] cases;
+	private JLabel score;
+
 	private JMenu menu;
 
 	public GamePanel(ThreesMain controller)
@@ -41,49 +42,34 @@ public class GamePanel extends JPanel implements ThreesView
 		
 		control = controller;
 		data = controller.getModel();
+		score = new JLabel();
+		
+		setLayout(new BorderLayout(5, 5));
 		
 		TabPanel = new JPanel();
-		/*
+		
 		menu = new JMenu();
 		menu.insert("Haut", 0);
 		menu.insert("Bas", 1);
 		menu.insert("Gauche", 2);
 		menu.insert("Droite", 3);
-		menu.setVisible(false);
+		menu.setVisible(true);
 		menu.setPopupMenuVisible(false);
 		add(menu);
-*/
-		cases = new JLabel[4][4];
-
-		Border line = BorderFactory.createLineBorder(Color.black);
 
 		TabPanel.setLayout(new GridLayout(4,4));
 		TabPanel.setVisible(true);
-		int x, y;
-		for(x =0;x<4;x++)
-		{
-			for(y=0;y<4;y++)
-			{
-				JPanel tmp = new JPanel();
-				cases[x][y] = new JLabel("");
-				cases[x][y].setFont(font);
-				cases[x][y].setBackground(Color.BLUE);
-				cases[x][y].setHorizontalAlignment(JLabel.CENTER);
-				cases[x][y].setVerticalAlignment(JLabel.CENTER);
-				tmp.setBorder(line);
-				tmp.add(cases[x][y]);
-				TabPanel.add(tmp);
-			}
-		}
+		
 
-		add(TabPanel);
+		add(TabPanel, BorderLayout.CENTER);
+		add(score, BorderLayout.SOUTH);
 		
 		addKeyListener(keyMove);
 		addMouseListener(mouseClick);
-/*		menu.getItem(0).addActionListener(menuHaut);
+		menu.getItem(0).addActionListener(menuHaut);
 		menu.getItem(1).addActionListener(menuBas);
 		menu.getItem(2).addActionListener(menuGauche);
-		menu.getItem(3).addActionListener(menuDroite);*/
+		menu.getItem(3).addActionListener(menuDroite);
 	}
 
 	public void initPartie()
@@ -113,20 +99,11 @@ public class GamePanel extends JPanel implements ThreesView
 				setCase(x, y, data.getValue(x, y));
 			}
 		}
+		score.setText("Score : " + Integer.toString(data.getScore()));
+		requestFocus();
 	}
 
-	public void setCase(int x, int y, int value)
-	{
-		if(value != 0)
-		{
-			cases[x][y].setText(Integer.toString(value));
-		}
-		else
-		{
-			cases[x][y].setText("");
-		}
-
-	}
+	public abstract void setCase(int x, int y, int value);
 
 	public JMenu getMenu()
 	{
@@ -264,16 +241,14 @@ public class GamePanel extends JPanel implements ThreesView
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-		/*	if(!menu.contains(e.getPoint()) && menu.isPopupMenuVisible())
+			if(!menu.contains(e.getPoint()) && menu.isPopupMenuVisible())
 			{
 				enleverMenu();
 			}
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
-				System.out.println("Blug");
 				afficherMenu(e.getX(), e.getY());
-			}
-			*/
+			}	
 		}
 	};
 

@@ -5,6 +5,7 @@ import java.util.Random;
 public class ThreesModel 
 {
 	private int [][] tuiles;
+	private int score;
 	private Random tirage;
 	private boolean loss;
 	private boolean full;
@@ -194,8 +195,22 @@ public class ThreesModel
 	
 	public void updateCases() 
 	{
+		calcScore();
 		testFull();
 		testPerdu();
+	}
+	
+	private void calcScore()
+	{
+		int x,y;
+		score = 0;
+		for(x=0;x<4;x++)
+		{
+			for(y=0;y<4;y++)
+			{
+				score += tuiles[x][y];
+			}
+		}
 	}
 	
 	private void testPerdu()
@@ -250,6 +265,11 @@ public class ThreesModel
 	public boolean getLoss() 
 	{
 		return loss;
+	}
+	
+	public int getScore()
+	{
+		return score;
 	}
 	
 	public int getValue(int x, int y)

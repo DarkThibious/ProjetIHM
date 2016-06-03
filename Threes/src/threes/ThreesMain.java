@@ -1,6 +1,8 @@
 package threes;
 
 import javax.swing.*;
+
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 public class ThreesMain extends JFrame
@@ -13,22 +15,23 @@ public class ThreesMain extends JFrame
 
     public void init() 
     {
-        contentPane = (JPanel) this.getContentPane();
+    	contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 
         startpanel = new StartPanel(this);
         contentPane.add(startpanel);
         this.addView(startpanel);
         
-        gamepanel = new GamePanel(this);
+        gamepanel = new GamePanel1D(this);
         this.addView(gamepanel);
         
-        setLocationRelativeTo(null);
-        setLocation(getX() - getWidth()/2 , getY() - getHeight()/2);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.pack();
+        setLocationRelativeTo(null);
+        setLocation(getX() - getWidth()/2 , getY() - getHeight()/2);
+        
         this.setVisible(true);
+        pack();
     }
 
     public ThreesMain()
@@ -63,8 +66,7 @@ public class ThreesMain extends JFrame
     	contentPane.add(gamepanel);
     	gamepanel.initPartie();
     	gamepanel.update();
-    	pack();
-    	
+    	setSize(new Dimension(400,400));
     }
 
     public static void main(String [] args)
@@ -76,32 +78,29 @@ public class ThreesMain extends JFrame
 	{
     	model.moveUp();
     	gamepanel.update();
-    	pack();
 	}
 	
 	public void moveDown()
 	{
 		model.moveDown();
 		gamepanel.update();
-		pack();
 	}
 	
 	public void moveLeft()
 	{
 		model.moveLeft();
 		gamepanel.update();
-		pack();
 	}
 	
 	public void moveRight()
 	{
 		model.moveRight();
     	gamepanel.update();
-    	pack();
-	}
+   	}
 	
 	public void perdu()
 	{
+		gamepanel.enleverMenu();
 		startpanel.update();
     	contentPane.remove(gamepanel);
 		contentPane.add(startpanel);
@@ -112,5 +111,4 @@ public class ThreesMain extends JFrame
 	{
 		return this.model;
 	}
-	
 }
