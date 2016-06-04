@@ -26,7 +26,7 @@ public class StartPanel extends JPanel implements ThreesView
 	JRadioButton option1 = new JRadioButton("Interface 1");
     JRadioButton option2 = new JRadioButton("Interface 2");
     ButtonGroup group = new ButtonGroup();
-    Boolean intefaceAv;
+    Boolean Interface;
 	
 	public StartPanel(ThreesMain controller)
 	{
@@ -73,7 +73,8 @@ public class StartPanel extends JPanel implements ThreesView
 		option1.addActionListener(radioButton);
 		option2.addActionListener(radioButton);
 
-        
+   	 setInterfaceAv(false);
+   	option1.setSelected(true);
 	}
 	
 	public void update()
@@ -110,18 +111,18 @@ public class StartPanel extends JPanel implements ThreesView
 		{
 		 JRadioButton button = (JRadioButton) event.getSource();
 	     if (radioButton == option1) 
-	    	 setIntefaceAv(true);
+	    	 setInterfaceAv(false);
 	     else if (radioButton == option2)  
-	    	 setIntefaceAv(false);	
+	    	 setInterfaceAv(true);	
 	    } 
 	};
 
-	public Boolean getIntefaceAv() {
-		return intefaceAv;
+	public Boolean getInterfaceAv() {
+		return Interface;
 	}
 
-	public void setIntefaceAv(Boolean intefaceAv) {
-		this.intefaceAv = intefaceAv;
+	public void setInterfaceAv(Boolean intefaceAv) {
+		this.Interface = intefaceAv;
 	}
 	
 	

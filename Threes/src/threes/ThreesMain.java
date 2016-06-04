@@ -59,8 +59,15 @@ public class ThreesMain extends JFrame
     }
     
     public void initPartie()
-    {
-        gamepanel = new GamePanel1D(this);
+    {	
+    	if(startpanel.getInterfaceAv() == false)
+    	{
+    		gamepanel = new GamePanel1D(this);
+    	}
+    	else
+    	{
+    		gamepanel = new GamePanel2D(this);
+    	}
         this.addView(gamepanel);
     	model.initPartie();
     	contentPane.remove(startpanel);
