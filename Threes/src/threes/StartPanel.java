@@ -109,7 +109,7 @@ public class StartPanel extends JPanel implements ThreesView
 		@Override
 	    public void actionPerformed(ActionEvent event)
 		{
-		 JRadioButton button = (JRadioButton) event.getSource();
+		 JRadioButton radioButton = (JRadioButton) event.getSource();
 	     if (radioButton == option1) 
 	    	 setInterfaceAv(false);
 	     else if (radioButton == option2)  

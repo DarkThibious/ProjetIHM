@@ -24,7 +24,6 @@ public class GamePanel1D extends GamePanel
 		{
 			for(y=0;y<4;y++)
 			{
-				JPanel tmp = new JPanel();
 				cases[x][y] = new JLabel("");
 				cases[x][y].setFont(font);
 				cases[x][y].setBackground(Color.BLUE);
