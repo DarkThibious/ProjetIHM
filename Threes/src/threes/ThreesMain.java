@@ -5,6 +5,17 @@ import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class ThreesMain extends JFrame
@@ -14,9 +25,128 @@ public class ThreesMain extends JFrame
     private GamePanel gamepanel;
 	private ArrayList<ThreesView> views = new ArrayList<ThreesView>();
     private ThreesModel model;
+   File fichier;
 
-    public void init() 
+    private int[] scores; // tableau des meilleurs scores
+    public void gestionScores()
     {
+    	int i=0;
+    	boolean existe;
+    	
+    	scores = new int[5];
+		for (i=0; i<5; i++) scores[i]=0; // le tableau est initialisé à 0 
+		
+		fichier = new File("Scores.txt");
+		if(fichier.exists()) existe = true; // on teste : si le fichier existe charger son contenu dans le tableau scores 
+		else existe = false;                //sinon le le crée 
+		try 
+		{
+			fichier.createNewFile();
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		if(existe == true) 
+		{
+			//si le fichier existe charger son contenu dans le tableau scores 
+			lireFichier(fichier);
+		}	
+    }
+    /* Retourne l'index où on doit inserer le score de la partie terminée*/
+    public int trouvePosition(int scorePartieTerminee)
+    {
+    	int index=0;
+    	while((scores[index] > scorePartieTerminee) && (index<5))
+    	{
+    		index++;
+    	}
+    	return index;
+    }
+    
+    /* insere dans le tableau des meilleurs scores le score de la partie , à la bonne place tout en déclant ce qu'il faut*/
+    public void insereScore(int index, int scorePartieTerminee)
+    {
+    	int i=4;
+    	while(i>index)
+    	{
+    		scores[i]=scores[i-1];
+    		i-=1;
+    	}
+    	scores[i]=scorePartieTerminee;
+    }
+    /* lire fichier et remplir le tableau des scores*/
+    public void lireFichier(File fichier)
+    {
+    	int i,line;
+    	FileReader fr = null;
+		try 
+		{
+			fr = new FileReader(fichier);
+		} 
+		catch (FileNotFoundException e1) 
+		{
+			e1.printStackTrace();
+		}
+		BufferedReader br = new BufferedReader(fr);
+		
+		try
+		{
+			String ligne = br.readLine();
+			i=0;
+			while ((ligne != null) && (i<5))
+			{
+				line = Integer.parseInt(ligne);
+				scores[i]=line;
+				ligne = br.readLine();
+				i+=1;
+			}
+			br.close();
+			fr.close();
+		}		
+		catch (IOException e)
+		{
+			System.out.println("Erreur lors de la lecture:"+e.getMessage());
+		}
+    }
+    /* Remplir le fichier à partir du tableau scores*/
+    void ecrireFichier(File fichier)
+    {
+    	int index;
+    	try
+		{
+			FileWriter fw = new FileWriter(fichier);
+			for (index=0;index<5;index++)
+			{
+				fw.write(Integer.toString(scores[index]));
+				fw.flush();
+			    fw.write ("\r\n");
+			}
+			fw.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Erreur lors de la lecture:"+e.getMessage());
+		}
+		
+    	
+    }
+    /* Retourne une chaine de caractères qui comprend les scores , on en aura pour l'affichage des meilleurs scores dans l'interface*/
+    public String afficherMeilleursScores()
+    {
+    	int i;
+    	String chaine = "";
+    	for(i=0;i<5;i++)
+    	{
+    		chaine+= "position"+i+" : "+String.valueOf(scores[i])+"\n";
+    	}
+    	return chaine;
+    }
+    public void init()
+    {
+    	/*****************J'ai appelé ici la gestion du score pour l'instant *************/
+    	gestionScores();
     	contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 
@@ -54,7 +184,7 @@ public class ThreesMain extends JFrame
      				if(menuListener==item1)
      				{
      					// ouvrir une pop up avec les meilleurs scores
-     					JOptionPane.showMessageDialog(contentPane, "Meilleurs scores ");
+     					JOptionPane.showMessageDialog(contentPane,"Meilleurs scores : \n"+ afficherMeilleursScores());
      				}
      				else if(menuListener==item2)
      				{
@@ -76,6 +206,7 @@ public class ThreesMain extends JFrame
         
         this.setVisible(true);
         pack();
+
     }
 
     public ThreesMain()
@@ -158,10 +289,28 @@ public class ThreesMain extends JFrame
     	contentPane.remove(gamepanel);
 		contentPane.add(startpanel);
     	pack();
+    	int index = trouvePosition(model.score);
+    	if(index < 5)
+    	{
+    		insereScore(index,model.score);
+    		JOptionPane.showMessageDialog(contentPane,"Bravo votre score de"+model.score+"" +
+    		" a été ajouté au tableau des \n"+ "meilleurs scores pour le visualiser cliquer sur" +
+    				" 'Meilleurs scores'\n"+"dans la barre des menus");
+    		ecrireFichier(fichier);
+    	}
 	}
 	
 	public ThreesModel getModel()
 	{
 		return this.model;
 	}
+
+	public int[] getScores() {
+		return scores;
+	}
+
+	public void setScores(int[] scores) {
+		this.scores = scores;
+	}
+
 }

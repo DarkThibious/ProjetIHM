@@ -5,7 +5,7 @@ import java.util.Random;
 public class ThreesModel 
 {
 	private int [][] tuiles;
-	private int score;
+	int score;
 	private Random tirage;
 	private boolean loss;
 	private boolean full;
