@@ -70,6 +70,12 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		menu.getItem(1).addActionListener(menuBas);
 		menu.getItem(2).addActionListener(menuGauche);
 		menu.getItem(3).addActionListener(menuDroite);
+
+	((GridLayout) TabPanel.getLayout()).setHgap(5);
+    ((GridLayout) TabPanel.getLayout()).setVgap(5);
+    TabPanel.setBackground(new Color(184,216,216));
+    TabPanel.setOpaque(true);
+
 	}
 
 	public void initPartie()
