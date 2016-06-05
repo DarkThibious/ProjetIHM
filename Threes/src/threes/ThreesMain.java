@@ -58,11 +58,20 @@ public class ThreesMain extends JFrame
     public int trouvePosition(int scorePartieTerminee)
     {
     	int index=0;
-    	while((scores[index] > scorePartieTerminee) && (index<5))
+    	if(scores[4] > scorePartieTerminee)
     	{
-    		index++;
+    		index=-1;
+    		return index;
     	}
-    	return index;
+    	else
+    	{
+        	while((scores[index] > scorePartieTerminee) && (index<5))
+        	{
+        		index++;
+        	}
+        	return index;
+    	}
+
     }
     
     /* insere dans le tableau des meilleurs scores le score de la partie , à la bonne place tout en déclant ce qu'il faut*/
@@ -283,14 +292,14 @@ public class ThreesMain extends JFrame
    	}
 	
 	public void perdu()
-	{
+	{ int index;
 		gamepanel.enleverMenu();
 		startpanel.update();
     	contentPane.remove(gamepanel);
 		contentPane.add(startpanel);
     	pack();
-    	int index = trouvePosition(model.score);
-    	if(index < 5)
+    	index = trouvePosition(model.score);
+    	if((index < 5)&&(index > -1))
     	{
     		insereScore(index,model.score);
     		JOptionPane.showMessageDialog(contentPane,"Bravo votre score de"+model.score+"" +
