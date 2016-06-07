@@ -302,7 +302,7 @@ public class ThreesMain extends JFrame
     	if((index < 5)&&(index > -1))
     	{
     		insereScore(index,model.score);
-    		JOptionPane.showMessageDialog(contentPane,"Bravo votre score de"+model.score+"" +
+    		JOptionPane.showMessageDialog(contentPane,"Bravo votre score de : "+model.score+"" +
     		" a été ajouté au tableau des \n"+ "meilleurs scores pour le visualiser cliquer sur" +
     				" 'Meilleurs scores'\n"+"dans la barre des menus");
     		ecrireFichier(fichier);

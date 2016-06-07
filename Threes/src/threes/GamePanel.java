@@ -3,6 +3,7 @@ package threes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -75,21 +76,84 @@ public abstract class GamePanel extends JPanel implements ThreesView
     ((GridLayout) TabPanel.getLayout()).setVgap(5);
     TabPanel.setBackground(new Color(184,216,216));
     TabPanel.setOpaque(true);
-
+    
 	}
+	
+	/* Gestion Menu circulaire */
+	public class sourisListener implements MouseListener
+	{
+		MenuCirculaire mc;
+		public void init()
+		{
+			mc = new MenuCirculaire(110,100);
+			addMouseListener(this);
+			
+		}
+		public void paint(Graphics g) 
+		{
+		      mc.dessinerMenuCirculaire(g);
+		}
+		@Override
+		public void mouseClicked(MouseEvent e1)
+		{
+			int x,y;
+		    x = e1.getX();
+		    y = e1.getY();
+		    if(e1.getButton() == MouseEvent.BUTTON3)
+			{
+			    mc.setPosition(x,y);
+			    repaint();
+			}	
+		}
 
+		@Override
+		public void mouseEntered(MouseEvent e1) 
+		{
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e1) 
+		{
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e1) 
+		{
+			int x,y;
+		    x = e1.getX();
+		    y = e1.getY();
+		    if(e1.getButton() == MouseEvent.BUTTON3)
+			{
+			    mc.setPosition(x,y);
+			    repaint();
+			}
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e1) 
+		{
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+	};
 	public void initPartie()
 	{
 		requestFocus();
 	}
-
+	
 	public void afficherMenu(int x, int y)
 	{
 		menu.setMenuLocation(x, y);
 		menu.setPopupMenuVisible(true);
 		menu.requestFocus();
 	}
-
 	public void enleverMenu()
 	{
 		menu.setPopupMenuVisible(false);
@@ -232,10 +296,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			{
 				control.perdu();
 			}
+			/*
 			else if(e.getButton() == MouseEvent.BUTTON1)
 			{
 				mouse1 = e.getPoint();
-			}
+			}*/
 		}
 
 		@Override
@@ -251,10 +316,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			{
 				enleverMenu();
 			}
+			/*
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
 				afficherMenu(e.getX(), e.getY());
-			}	
+			}*/
 		}
 	};
 
@@ -290,4 +356,5 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			}
 		}
 	};
+	
 }
