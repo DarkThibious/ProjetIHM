@@ -26,29 +26,30 @@ public abstract class GamePanel extends JPanel implements ThreesView
 {
 	private ThreesModel data;
 	private ThreesMain control;
-	
+
 	protected JPanel TabPanel;
-	
+
+	MenuCirculaire mc;
 	Point mouse1;
-	
+
 	private JLabel score;
 
 	private JMenu menu;
 
 	public GamePanel(ThreesMain controller)
-	{	
+	{
 		super();
 		setFocusable(true);
 		setVisible(true);
-		
+
 		control = controller;
 		data = controller.getModel();
 		score = new JLabel();
-		
+
 		setLayout(new BorderLayout(5, 5));
-		
+
 		TabPanel = new JPanel();
-		
+
 		menu = new JMenu();
 		menu.insert("Haut", 0);
 		menu.insert("Bas", 1);
@@ -60,11 +61,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 		TabPanel.setLayout(new GridLayout(4,4));
 		TabPanel.setVisible(true);
-		
+
 
 		add(TabPanel, BorderLayout.CENTER);
 		add(score, BorderLayout.SOUTH);
-		
+
 		addKeyListener(keyMove);
 		addMouseListener(mouseClick);
 		menu.getItem(0).addActionListener(menuHaut);
@@ -76,78 +77,18 @@ public abstract class GamePanel extends JPanel implements ThreesView
     ((GridLayout) TabPanel.getLayout()).setVgap(5);
     TabPanel.setBackground(new Color(184,216,216));
     TabPanel.setOpaque(true);
-    
+
+	mc = new MenuCirculaire(110,100);
+	mc.setVisible(false);
+	//TabPanel.add(mc);
+
 	}
-	
-	/* Gestion Menu circulaire */
-	public class sourisListener implements MouseListener
-	{
-		MenuCirculaire mc;
-		public void init()
-		{
-			mc = new MenuCirculaire(110,100);
-			addMouseListener(this);
-			
-		}
-		public void paint(Graphics g) 
-		{
-		      mc.dessinerMenuCirculaire(g);
-		}
-		@Override
-		public void mouseClicked(MouseEvent e1)
-		{
-			int x,y;
-		    x = e1.getX();
-		    y = e1.getY();
-		    if(e1.getButton() == MouseEvent.BUTTON3)
-			{
-			    mc.setPosition(x,y);
-			    repaint();
-			}	
-		}
 
-		@Override
-		public void mouseEntered(MouseEvent e1) 
-		{
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e1) 
-		{
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e1) 
-		{
-			int x,y;
-		    x = e1.getX();
-		    y = e1.getY();
-		    if(e1.getButton() == MouseEvent.BUTTON3)
-			{
-			    mc.setPosition(x,y);
-			    repaint();
-			}
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e1) 
-		{
-			// TODO Auto-generated method stub
-			
-		}
-		
-		
-	};
 	public void initPartie()
 	{
 		requestFocus();
 	}
-	
+
 	public void afficherMenu(int x, int y)
 	{
 		menu.setMenuLocation(x, y);
@@ -180,11 +121,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		return this.menu;
 	}
 
-	public ActionListener menuHaut = new ActionListener() 
+	public ActionListener menuHaut = new ActionListener()
 	{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) 
+		public void actionPerformed(ActionEvent arg0)
 		{
 			if(data.getLoss())
 			{
@@ -197,11 +138,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		}
 	};
 
-	public ActionListener menuBas = new ActionListener() 
+	public ActionListener menuBas = new ActionListener()
 	{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) 
+		public void actionPerformed(ActionEvent arg0)
 		{
 
 			if(data.getLoss())
@@ -215,11 +156,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		}
 	};
 
-	public ActionListener menuDroite = new ActionListener() 
+	public ActionListener menuDroite = new ActionListener()
 	{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) 
+		public void actionPerformed(ActionEvent arg0)
 		{
 			if(data.getLoss())
 			{
@@ -232,11 +173,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		}
 	};
 
-	public ActionListener menuGauche = new ActionListener() 
+	public ActionListener menuGauche = new ActionListener()
 	{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) 
+		public void actionPerformed(ActionEvent arg0)
 		{
 			if(data.getLoss())
 			{
@@ -249,7 +190,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		}
 	};
 
-	public MouseListener mouseClick = new MouseListener() 
+	public MouseListener mouseClick = new MouseListener()
 	{
 		@Override
 		public void mouseReleased(MouseEvent e)
@@ -296,11 +237,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			{
 				control.perdu();
 			}
-			/*
+
 			else if(e.getButton() == MouseEvent.BUTTON1)
 			{
 				mouse1 = e.getPoint();
-			}*/
+			}
 		}
 
 		@Override
@@ -316,6 +257,11 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			{
 				enleverMenu();
 			}
+			if(e.getButton() == MouseEvent.BUTTON3)
+			{
+			    mc.setLocation(e.getX(),e.getY());
+			    mc.setVisible(true);
+			}
 			/*
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
@@ -324,7 +270,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		}
 	};
 
-	public KeyListener keyMove = new KeyListener() 
+	public KeyListener keyMove = new KeyListener()
 	{
 		@Override
 		public void keyTyped(KeyEvent e){}
@@ -332,7 +278,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		public void keyReleased(KeyEvent e){}
 
 		@Override
-		public void keyPressed(KeyEvent e) 
+		public void keyPressed(KeyEvent e)
 		{
 			if(data.getLoss())
 			{
@@ -356,5 +302,5 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			}
 		}
 	};
-	
+
 }
