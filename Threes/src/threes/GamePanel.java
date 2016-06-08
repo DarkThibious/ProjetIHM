@@ -29,12 +29,13 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 	protected JPanel TabPanel;
 
-	MenuCirculaire mc;
-	Point mouse1;
+	private Point mouse1;
 
 	private JLabel score;
 
 	private JMenu menu;
+	
+	private PopupCirculaire pop;
 
 	public GamePanel(ThreesMain controller)
 	{
@@ -50,38 +51,43 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 		TabPanel = new JPanel();
 
+		pop = new PopupCirculaire(100, 100, -45);
+		add(pop);
+		pop.addItem("HAUT");
+		pop.addItem("BAS");
+		pop.addItem("GAUCHE");
+		pop.addItem("DROITE");
+		pop.setVisible(false);
+		
+		/*
 		menu = new JMenu();
 		menu.insert("Haut", 0);
 		menu.insert("Bas", 1);
 		menu.insert("Gauche", 2);
 		menu.insert("Droite", 3);
-		menu.setVisible(true);
+		menu.setEnabled(true);
+		
 		menu.setPopupMenuVisible(false);
-		add(menu);
+		add(menu);*/
 
 		TabPanel.setLayout(new GridLayout(4,4));
 		TabPanel.setVisible(true);
-
 
 		add(TabPanel, BorderLayout.CENTER);
 		add(score, BorderLayout.SOUTH);
 
 		addKeyListener(keyMove);
 		addMouseListener(mouseClick);
-		menu.getItem(0).addActionListener(menuHaut);
+		
+		/*menu.getItem(0).addActionListener(menuHaut);
 		menu.getItem(1).addActionListener(menuBas);
 		menu.getItem(2).addActionListener(menuGauche);
-		menu.getItem(3).addActionListener(menuDroite);
+		menu.getItem(3).addActionListener(menuDroite);*/
 
-	((GridLayout) TabPanel.getLayout()).setHgap(5);
-    ((GridLayout) TabPanel.getLayout()).setVgap(5);
-    TabPanel.setBackground(new Color(184,216,216));
-    TabPanel.setOpaque(true);
-
-	mc = new MenuCirculaire(110,100);
-	mc.setVisible(false);
-	//TabPanel.add(mc);
-
+		((GridLayout) TabPanel.getLayout()).setHgap(5);
+		((GridLayout) TabPanel.getLayout()).setVgap(5);
+		TabPanel.setBackground(new Color(184,216,216));
+		TabPanel.setOpaque(true);
 	}
 
 	public void initPartie()
@@ -91,13 +97,9 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 	public void afficherMenu(int x, int y)
 	{
-		menu.setMenuLocation(x, y);
-		menu.setPopupMenuVisible(true);
-		menu.requestFocus();
-	}
-	public void enleverMenu()
-	{
-		menu.setPopupMenuVisible(false);
+		pop.setLocation(x-pop.getWidth()/2, y-pop.getHeight()/2);
+		pop.setVisible(true);
+		pop.repaint();
 	}
 
 	public void update()
@@ -253,20 +255,15 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-			if(!menu.contains(e.getPoint()) && menu.isPopupMenuVisible())
-			{
-				enleverMenu();
-			}
-			if(e.getButton() == MouseEvent.BUTTON3)
+			/*if(e.getButton() == MouseEvent.BUTTON3)
 			{
 			    mc.setLocation(e.getX(),e.getY());
 			    mc.setVisible(true);
-			}
-			/*
+			}*/
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
 				afficherMenu(e.getX(), e.getY());
-			}*/
+			}
 		}
 	};
 

@@ -292,8 +292,8 @@ public class ThreesMain extends JFrame
    	}
 	
 	public void perdu()
-	{ int index;
-		gamepanel.enleverMenu();
+	{ 
+		int index;
 		startpanel.update();
     	contentPane.remove(gamepanel);
 		contentPane.add(startpanel);
