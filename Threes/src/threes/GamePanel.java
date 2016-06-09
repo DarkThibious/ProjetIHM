@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 public abstract class GamePanel extends JPanel implements ThreesView
@@ -36,6 +37,8 @@ public abstract class GamePanel extends JPanel implements ThreesView
 	private JMenu menu;
 	
 	private PopupCirculaire pop;
+	
+	private Timer timer;
 
 	public GamePanel(ThreesMain controller)
 	{
@@ -46,6 +49,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		control = controller;
 		data = controller.getModel();
 		score = new JLabel();
+		timer = new Timer(1000, stayListener);
 
 		setLayout(new BorderLayout(5, 5));
 
@@ -53,22 +57,12 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 		pop = new PopupCirculaire(150, 150, 45);
 		add(pop);
-		pop.addItem("HAUT");
+		pop.addItem("DROITE");
 		pop.addItem("BAS");
 		pop.addItem("GAUCHE");
-		pop.addItem("DROITE");
+		pop.addItem("HAUT");
+	
 		pop.setVisible(false);
-		
-		/*
-		menu = new JMenu();
-		menu.insert("Haut", 0);
-		menu.insert("Bas", 1);
-		menu.insert("Gauche", 2);
-		menu.insert("Droite", 3);
-		menu.setEnabled(true);
-		
-		menu.setPopupMenuVisible(false);
-		add(menu);*/
 
 		TabPanel.setLayout(new GridLayout(4,4));
 		TabPanel.setVisible(true);
@@ -79,11 +73,6 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		addKeyListener(keyMove);
 		addMouseListener(mouseClick);
 		
-		/*menu.getItem(0).addActionListener(menuHaut);
-		menu.getItem(1).addActionListener(menuBas);
-		menu.getItem(2).addActionListener(menuGauche);
-		menu.getItem(3).addActionListener(menuDroite);*/
-
 		((GridLayout) TabPanel.getLayout()).setHgap(5);
 		((GridLayout) TabPanel.getLayout()).setVgap(5);
 		TabPanel.setBackground(new Color(184,216,216));
@@ -118,26 +107,60 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 	public abstract void setCase(int x, int y, int value);
 
+	public void testPop(int x, int y)
+	{
+		int i;
+		for(i=0;i<pop.items.size();i++)
+		{
+			if(pop.items.get(i).contains(x-pop.getX()-pop.getWidth()/2, y-pop.getY()-pop.getHeight()/2))
+			{
+				switch(i)
+				{
+				case 0 :
+					control.moveRight();
+					break;
+				case 1 :
+					control.moveDown();
+					break;
+				case 2 :
+					control.moveLeft();
+					break;
+				case 3 :
+					control.moveUp();
+					break;
+				}
+				break;
+			}
+
+		}
+	}
+	
 	public JMenu getMenu()
 	{
 		return this.menu;
 	}
+	
+	public ActionListener stayListener = new ActionListener() 
+	{	
+		public void actionPerformed(ActionEvent e) 
+		{
+			afficherMenu(mouse1.x, mouse1.y);
+			
+		}
+	};
 
 	public MouseListener mouseClick = new MouseListener()
 	{
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
+			timer.stop();
 			if(e.getButton() == MouseEvent.BUTTON1)
 			{
 				Point mouse2 = e.getPoint();
 				int dx = mouse1.x - mouse2.x;
 				int dy = mouse1.y - mouse2.y;
 
-				if(Math.abs(dx) < 10 && Math.abs(dy) < 10) // Pour éviter de prendre en compte les mouvements trop petits
-				{
-					return;
-				}
 				if(Math.abs(dy) > Math.abs(dx))
 				{
 					if(dy > 0)
@@ -161,22 +184,17 @@ public abstract class GamePanel extends JPanel implements ThreesView
 					}
 				}
 			}
+
+			if(pop.isVisible())
+			{
+				pop.setVisible(false);
+			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
-			if(pop.isVisible())
-			{
-				if(pop.contains(e.getX(), e.getY()))
-				{
-					
-				}
-				else
-				{
-					pop.setVisible(false);
-				}
-			}
+			timer.restart();
 			if(data.getLoss())
 			{
 				control.perdu();
@@ -185,6 +203,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			else if(e.getButton() == MouseEvent.BUTTON1)
 			{
 				mouse1 = e.getPoint();
+				
 			}
 		}
 
@@ -197,11 +216,14 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-			/*if(e.getButton() == MouseEvent.BUTTON3)
+			if(pop.isVisible())
 			{
-			    mc.setLocation(e.getX(),e.getY());
-			    mc.setVisible(true);
-			}*/
+				if(pop.contains(e.getX(), e.getY()))
+				{
+					testPop(e.getX(), e.getY());
+				}
+				pop.setVisible(false);
+			}
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
 				afficherMenu(e.getX(), e.getY());

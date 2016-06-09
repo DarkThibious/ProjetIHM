@@ -41,7 +41,7 @@ public class PopupCirculaire extends JComponent
 	public void paint(Graphics g)
 	{
 		int i;
-		int angleArc = 360/(this.items.size());
+		int angleArc = -360/(this.items.size());
 		for(i=0; i<this.items.size();i++)
 		{
 			this.items.get(i).angleDebut = angleDebut+angleArc*i;
@@ -50,5 +50,19 @@ public class PopupCirculaire extends JComponent
 			this.items.get(i).h = this.getHeight()-5;
 			this.items.get(i).paint(g);
 		}
+	}
+	@Override
+	public boolean contains(int x,int y)
+	{
+		x -= getX();
+		y -= getY();
+		if(Math.pow((x-getWidth()/2),2)+Math.pow((y-getHeight()/2),2) > Math.pow(getHeight()/2,2))
+		{
+			return false;
+		}	
+		else
+		{	
+			return true;
+		}	
 	}
 }

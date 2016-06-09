@@ -59,7 +59,7 @@ public class Tuile2D extends JComponent{
 				 	
 		 }
 	    g.setColor(getForeground());
-	    g.drawString(Integer.toString(value), getSize().width/2 - g.getFontMetrics().stringWidth(Integer.toString(value))/2, getSize().height/2 + g.getFontMetrics().getHeight()/2);
+	    g.drawString(Integer.toString(value), getSize().width/2 - g.getFontMetrics().stringWidth(Integer.toString(value))/2, getSize().height/2 );
 	}
 	public void update(int valeur)
 	{
