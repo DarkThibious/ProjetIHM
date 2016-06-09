@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 public class GamePanel2D extends GamePanel
 {	
 	private Tuile2D[][] cases;
-			
+	
 	public GamePanel2D(ThreesMain controller)
 	{
 		super(controller);

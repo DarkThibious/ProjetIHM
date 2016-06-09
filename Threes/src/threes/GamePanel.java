@@ -51,7 +51,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 
 		TabPanel = new JPanel();
 
-		pop = new PopupCirculaire(100, 100, -45);
+		pop = new PopupCirculaire(150, 150, 45);
 		add(pop);
 		pop.addItem("HAUT");
 		pop.addItem("BAS");
@@ -123,75 +123,6 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		return this.menu;
 	}
 
-	public ActionListener menuHaut = new ActionListener()
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0)
-		{
-			if(data.getLoss())
-			{
-				control.perdu();
-			}
-			else
-			{
-				control.moveUp();
-			}
-		}
-	};
-
-	public ActionListener menuBas = new ActionListener()
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0)
-		{
-
-			if(data.getLoss())
-			{
-				control.perdu();
-			}
-			else
-			{
-				control.moveDown();
-			}
-		}
-	};
-
-	public ActionListener menuDroite = new ActionListener()
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0)
-		{
-			if(data.getLoss())
-			{
-				control.perdu();
-			}
-			else
-			{
-				control.moveRight();
-			}
-		}
-	};
-
-	public ActionListener menuGauche = new ActionListener()
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0)
-		{
-			if(data.getLoss())
-			{
-				control.perdu();
-			}
-			else
-			{
-				control.moveLeft();
-			}
-		}
-	};
-
 	public MouseListener mouseClick = new MouseListener()
 	{
 		@Override
@@ -235,6 +166,17 @@ public abstract class GamePanel extends JPanel implements ThreesView
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
+			if(pop.isVisible())
+			{
+				if(pop.contains(e.getX(), e.getY()))
+				{
+					
+				}
+				else
+				{
+					pop.setVisible(false);
+				}
+			}
 			if(data.getLoss())
 			{
 				control.perdu();
