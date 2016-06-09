@@ -129,6 +129,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 					control.moveUp();
 					break;
 				}
+				System.out.println(i);
 				break;
 			}
 
@@ -161,40 +162,46 @@ public abstract class GamePanel extends JPanel implements ThreesView
 				int dx = mouse1.x - mouse2.x;
 				int dy = mouse1.y - mouse2.y;
 
-				if(Math.abs(dy) > Math.abs(dx))
+				if(Math.abs(dx) > 10 || Math.abs(dy) > 10)
 				{
-					if(dy > 0)
+					if(Math.abs(dy) > Math.abs(dx))
 					{
-						control.moveUp();
+						if(dy > 0)
+						{
+							control.moveUp();
+						}
+						else
+						{
+							control.moveDown();
+						}
 					}
 					else
 					{
-						control.moveDown();
+						if(dx > 0)
+						{
+							control.moveLeft();
+						}
+						else
+						{
+							control.moveRight();
+						}
+					}
+					if(pop.isVisible())
+					{
+						pop.setVisible(false);
 					}
 				}
-				else
+				else if(pop.isVisible())
 				{
-					if(dx > 0)
-					{
-						control.moveLeft();
-					}
-					else
-					{
-						control.moveRight();
-					}
+					testPop(e.getX(), e.getY());
+					pop.setVisible(false);
 				}
-			}
-
-			if(pop.isVisible())
-			{
-				pop.setVisible(false);
 			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
-			timer.restart();
 			if(data.getLoss())
 			{
 				control.perdu();
@@ -203,7 +210,7 @@ public abstract class GamePanel extends JPanel implements ThreesView
 			else if(e.getButton() == MouseEvent.BUTTON1)
 			{
 				mouse1 = e.getPoint();
-				
+				timer.restart();
 			}
 		}
 
