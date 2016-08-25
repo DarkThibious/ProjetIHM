@@ -2,9 +2,10 @@ package threes;
 
 import java.awt.Color;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
+@SuppressWarnings("serial")
 public class GamePanel2D extends GamePanel
 {	
 	private Tuile2D[][] cases;

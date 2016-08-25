@@ -3,15 +3,11 @@ package threes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.PopupMenu;
-import java.awt.color.ColorSpace;
-import java.security.Policy;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
 
+@SuppressWarnings("serial")
 public class PopupCirculaire extends JComponent
 {
 	int angleDebut;

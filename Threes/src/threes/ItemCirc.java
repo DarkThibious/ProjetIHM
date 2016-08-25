@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class ItemCirc extends JComponent 
 {
 	int angleDebut,angleArc, l, h;

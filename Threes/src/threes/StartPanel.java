@@ -1,13 +1,9 @@
 package threes;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -15,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+@SuppressWarnings("serial")
 public class StartPanel extends JPanel implements ThreesView
 {
 	private ThreesModel data;
@@ -27,7 +24,10 @@ public class StartPanel extends JPanel implements ThreesView
     JRadioButton option2 = new JRadioButton("Interface 2");
     ButtonGroup group = new ButtonGroup();
     Boolean Interface;
-	
+    JPanel finPartie = new JPanel();
+    JPanel commencer = new JPanel();
+    JPanel interfaces = new JPanel();
+    
 	public StartPanel(ThreesMain controller)
 	{
 		super();
@@ -50,14 +50,9 @@ public class StartPanel extends JPanel implements ThreesView
 		losslbl.setHorizontalAlignment(JLabel.CENTER);
 		scorelbl.setHorizontalAlignment(JLabel.CENTER);
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setLayout(new FlowLayout());
-		add(losslbl);
-		add(scorelbl);
-		add(start);
+		setLayout(new BorderLayout());
 		
 		start.addActionListener(buttonStart);
-		
 		start.requestFocus();
 		
 		this.setVisible(true);
@@ -66,15 +61,24 @@ public class StartPanel extends JPanel implements ThreesView
        
         group.add(option1);
         group.add(option2);
-        setLayout(new FlowLayout());
-        add(option1);
-        add(option2);
         
 		option1.addActionListener(radioButton);
 		option2.addActionListener(radioButton);
 
-   	 setInterfaceAv(false);
-   	option1.setSelected(true);
+		setInterfaceAv(false);
+		option1.setSelected(true);
+   	
+		finPartie.add(losslbl);
+		finPartie.add(scorelbl);
+		finPartie.setLayout(new BoxLayout(finPartie, BoxLayout.Y_AXIS));
+		add(finPartie, BorderLayout.NORTH);
+		commencer.add(start);
+		commencer.setLayout(new BoxLayout(commencer, BoxLayout.Y_AXIS));	
+		add(commencer,BorderLayout.CENTER);
+		interfaces.add(option1);
+		interfaces.add(option2);
+		commencer.add(interfaces);
+   	
 	}
 	
 	public void update()

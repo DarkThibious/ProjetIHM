@@ -1,14 +1,12 @@
 package threes;
 
-import static threes.ThreesView.font;
-
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+@SuppressWarnings("serial")
 public class GamePanel1D extends GamePanel
 {
 	private JLabel[][] cases;
